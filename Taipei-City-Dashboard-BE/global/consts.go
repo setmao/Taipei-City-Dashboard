@@ -21,6 +21,8 @@ const (
 	IssueLimitAPIRequestsTimes       = 20
 	IssueLimitTotalRequestsTimes     = 200
 	LimitRequestsDuration            = 60 * time.Second
+	EmergenceLimitAPIRequestsTimes   = 20
+	EmergenceLimitTotalRequestsTimes = 100
 
 	// JWT Issuer
 	JwtIssuer = "Taipei citydashboard"

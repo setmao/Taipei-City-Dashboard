@@ -26,6 +26,7 @@ func ConfigureRoutes() {
 	configureComponentRoutes()
 	configureDashboardRoutes()
 	configureIssueRoutes()
+	configureEmergenceRoutes()
 }
 
 func configureAuthRoutes() {
@@ -119,5 +120,19 @@ func configureIssueRoutes() {
 			GET("/", controllers.GetAllIssues)
 		issueRoutes.
 			PATCH("/:id", controllers.UpdateIssueByID)
+	}
+}
+
+func configureEmergenceRoutes() {
+	emergenceRoutes := RouterGroup.Group("/emergence")
+	emergenceRoutes.Use(middleware.LimitAPIRequests(global.EmergenceLimitAPIRequestsTimes, global.LimitRequestsDuration))
+	emergenceRoutes.Use(middleware.LimitTotalRequests(global.EmergenceLimitTotalRequestsTimes, global.LimitRequestsDuration))
+	{
+		emergenceRoutes.
+			GET("/events", controllers.GetEmergence)
+		emergenceRoutes.
+			GET("/air-qualities", controllers.GetAirQuality)
+		emergenceRoutes.
+			GET("/resources", controllers.GetResource)
 	}
 }
