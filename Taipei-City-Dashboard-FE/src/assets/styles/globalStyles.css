@@ -162,3 +162,19 @@ td:last-child {
 		transform: rotate(360deg);
 	}
 }
+
+
+.panel {
+	width: Hug (334px)px;
+	height: Hug (147.93px)px;
+	padding: 16px;
+	gap: 14px;
+	border-radius: 16px;
+	opacity: 0px;
+	background: #282A2C;
+	border: 1px solid transparent;
+	transition: all	0.3s;
+}
+.focused {
+  border: 1px solid #5a9cf8;
+}

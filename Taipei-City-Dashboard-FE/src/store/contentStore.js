@@ -1,4 +1,4 @@
- 
+
 /* eslint-disable indent */
 
 // Developed by Taipei Urban Intelligence Center 2023-2024
@@ -59,7 +59,8 @@ export const useContentStore = defineStore("content", {
 			if (this.currentDashboard.index === index) {
 				if (
 					this.currentDashboard.mode === "/mapview" &&
-					index !== "map-layers"
+					index !== "map-layers" &&
+					index !== "emergences-layer"
 				) {
 					this.setMapLayers();
 				} else {
@@ -164,10 +165,10 @@ export const useContentStore = defineStore("content", {
 							component.time_from
 						)
 							? getComponentDataTimeframe(
-									component.time_from,
-									component.time_to,
-									true
-							  )
+								component.time_from,
+								component.time_to,
+								true
+							)
 							: {},
 					}
 				);
@@ -216,7 +217,8 @@ export const useContentStore = defineStore("content", {
 			}
 			if (
 				this.currentDashboard.mode === "/mapview" &&
-				this.currentDashboard.index !== "map-layers"
+				this.currentDashboard.index !== "map-layers" &&
+				this.currentDashboard.index !== "emergences-layer"
 			) {
 				// In /mapview, map layer components are also present and need to be fetched
 				this.setMapLayers();
@@ -309,10 +311,10 @@ export const useContentStore = defineStore("content", {
 						dialogStore.moreInfoContent.time_from
 					)
 						? getComponentDataTimeframe(
-								dialogStore.moreInfoContent.time_from,
-								dialogStore.moreInfoContent.time_to,
-								true
-						  )
+							dialogStore.moreInfoContent.time_from,
+							dialogStore.moreInfoContent.time_to,
+							true
+						)
 						: {},
 				}
 			);

@@ -1,7 +1,11 @@
 <!-- Developed by Taipei Urban Intelligence Center 2023-2024-->
 
 <!-- This component is mounted programmically by the mapstore. "mapConfig" and "popupContent" are passed in in the mapStore -->
-<script setup></script>
+<script setup>
+const userLocation = await navigator.geolocation.getCurrentPosition();
+const distance = turf.distance(userLocation, popupContent[activeTab].geometry.coordinates, options);
+console.log(userLocation, distance);
+</script>
 
 <template>
   <div class="mappopup">
@@ -36,6 +40,7 @@
         <h3>{{ item.name }}</h3>
         <p>{{ popupContent[activeTab].properties[item.key] }}</p>
       </div>
+	  <div>dist: {{ distance }}</div>
     </div>
   </div>
 </template>

@@ -239,7 +239,7 @@ onMounted(() => {
 	&-layers {
 		position: absolute;
 		right: 10px;
-		top: 104px;
+		top: 164px;
 		z-index: 1;
 		display: flex;
 		flex-direction: column;

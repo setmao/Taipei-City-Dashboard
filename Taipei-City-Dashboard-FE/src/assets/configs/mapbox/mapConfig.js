@@ -327,6 +327,9 @@ export const maplayerCommonLayout = {
 	"symbol-triangle_white": {
 		"icon-image": "triangle_white",
 	},
+	"emergencies": {
+		"icon-image": "emerg-fire",
+	},
 	"symbol-youbike": {
 		"icon-image": [
 			"case",

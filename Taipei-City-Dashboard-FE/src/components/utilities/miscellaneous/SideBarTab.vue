@@ -10,25 +10,26 @@ import { useAuthStore } from "../../../store/authStore";
 const route = useRoute();
 
 const props = defineProps({
-	icon: { type: String },
-	title: { type: String },
-	index: { type: String },
-	expanded: { type: Boolean },
+  icon: { type: String },
+  title: { type: String },
+  index: { type: String },
+  expanded: { type: Boolean },
 });
 
 const authStore = useAuthStore();
 
 const tabLink = computed(() => {
-	if (authStore.currentPath === "admin") {
-		return `/admin/${props.index}`;
-	}
-	return `${route.path}?index=${props.index}`;
+  if (authStore.currentPath === "admin") {
+    return `/admin/${props.index}`;
+  }
+  return `${route.path}?index=${props.index}`;
 });
 const linkActiveOrNot = computed(() => {
-	if (authStore.currentPath === "admin") {
-		return route.path === `/admin/${props.index}` ? true : false;
-	}
-	return route.query.index === props.index ? true : false;
+  if (authStore.currentPath === "admin") {
+    return route.path === `/admin/${props.index}` ? true : false;
+  }
+  console.log(route.path, route.query.index, props.index);
+  return route.query.index === props.index ? true : false;
 });
 </script>
 
@@ -46,41 +47,41 @@ const linkActiveOrNot = computed(() => {
 
 <style scoped lang="scss">
 .sidebartab {
-	max-height: var(--font-xl);
-	display: flex;
-	align-items: center;
-	margin: var(--font-s) 0;
-	border-left: solid 4px transparent;
-	border-radius: 0 5px 5px 0;
-	transition: background-color 0.2s;
-	white-space: nowrap;
-	text-wrap: nowrap;
+  max-height: var(--font-xl);
+  display: flex;
+  align-items: center;
+  margin: var(--font-s) 0;
+  border-left: solid 4px transparent;
+  border-radius: 0 5px 5px 0;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+  text-wrap: nowrap;
 
-	&:hover {
-		background-color: var(--color-component-background);
-	}
+  &:hover {
+    background-color: var(--color-component-background);
+  }
 
-	span {
-		min-width: var(--font-l);
-		margin-left: var(--font-s);
-		font-family: var(--font-icon);
-		font-size: calc(var(--font-m) * var(--font-to-icon));
-	}
+  span {
+    min-width: var(--font-l);
+    margin-left: var(--font-s);
+    font-family: var(--font-icon);
+    font-size: calc(var(--font-m) * var(--font-to-icon));
+  }
 
-	h3 {
-		margin-left: var(--font-s);
-		font-size: var(--font-m);
-		font-weight: 400;
-	}
+  h3 {
+    margin-left: var(--font-s);
+    font-size: var(--font-m);
+    font-weight: 400;
+  }
 
-	&-active {
-		border-left-color: var(--color-highlight);
-		background-color: var(--color-component-background);
+  &-active {
+    border-left-color: var(--color-highlight);
+    background-color: var(--color-component-background);
 
-		span,
-		h3 {
-			color: var(--color-highlight);
-		}
-	}
+    span,
+    h3 {
+      color: var(--color-highlight);
+    }
+  }
 }
 </style>

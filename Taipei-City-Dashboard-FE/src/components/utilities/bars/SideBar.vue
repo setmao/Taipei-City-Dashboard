@@ -18,25 +18,25 @@ const authStore = useAuthStore();
 const isExpanded = ref(true);
 
 function handleOpenAddDashboard() {
-	dialogStore.addEdit = "add";
-	dialogStore.showDialog("addEditDashboards");
+  dialogStore.addEdit = "add";
+  dialogStore.showDialog("addEditDashboards");
 }
 
 function toggleExpand() {
-	isExpanded.value = isExpanded.value ? false : true;
-	localStorage.setItem("isExpanded", isExpanded.value);
-	if (!isExpanded.value) {
-		mapStore.resizeMap();
-	}
+  isExpanded.value = isExpanded.value ? false : true;
+  localStorage.setItem("isExpanded", isExpanded.value);
+  if (!isExpanded.value) {
+    mapStore.resizeMap();
+  }
 }
 
 onMounted(() => {
-	const storedExpandedState = localStorage.getItem("isExpanded");
-	if (storedExpandedState === "false") {
-		isExpanded.value = false;
-	} else {
-		isExpanded.value = true;
-	}
+  const storedExpandedState = localStorage.getItem("isExpanded");
+  if (storedExpandedState === "false") {
+    isExpanded.value = false;
+  } else {
+    isExpanded.value = true;
+  }
 });
 </script>
 
@@ -58,18 +58,14 @@ onMounted(() => {
       />
       <div class="sidebar-sub-add">
         <h2>{{ isExpanded ? `個人儀表板 ` : `個人` }}</h2>
-        <button
-          v-if="isExpanded"
-          @click="handleOpenAddDashboard"
-        >
+        <button v-if="isExpanded" @click="handleOpenAddDashboard">
           <span>add_circle_outline</span>新增
         </button>
       </div>
       <div
         v-if="
-          contentStore.personalDashboards.filter(
-            (item) => item.icon !== 'favorite'
-          ).length === 0
+          contentStore.personalDashboards.filter((item) => item.icon !== 'favorite')
+            .length === 0
         "
         class="sidebar-sub-no"
       >
@@ -97,6 +93,14 @@ onMounted(() => {
       :index="item.index"
       :expanded="isExpanded"
     />
+    <h2>{{ isExpanded ? `災難資訊` : `災難` }}</h2>
+    <SideBarTab
+      icon="emergency_share"
+      title="災難資訊"
+      :expanded="isExpanded"
+      index="emergences-layer"
+    />
+
     <h2>{{ isExpanded ? `基本地圖圖層` : `圖層` }}</h2>
     <SideBarTab
       icon="public"
@@ -105,14 +109,9 @@ onMounted(() => {
       index="map-layers"
     />
 
-    <button
-      class="sidebar-collapse-button"
-      @click="toggleExpand"
-    >
+    <button class="sidebar-collapse-button" @click="toggleExpand">
       <span>{{
-        isExpanded
-          ? "keyboard_double_arrow_left"
-          : "keyboard_double_arrow_right"
+        isExpanded ? "keyboard_double_arrow_left" : "keyboard_double_arrow_right"
       }}</span>
     </button>
   </div>
@@ -120,86 +119,86 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .sidebar {
-	width: 170px;
-	min-width: 170px;
-	height: calc(100vh - 80px);
-	height: calc(var(--vh) * 100 - 80px);
-	max-height: calc(100vh - 80px);
-	max-height: calc(var(--vh) * 100 - 80px);
-	position: relative;
-	padding: 0 10px 0 var(--font-m);
-	margin-top: 20px;
-	border-right: 1px solid var(--color-border);
-	transition: min-width 0.2s ease-out;
-	overflow-x: hidden;
-	overflow-y: scroll;
-	user-select: none;
+  width: 170px;
+  min-width: 170px;
+  height: calc(100vh - 80px);
+  height: calc(var(--vh) * 100 - 80px);
+  max-height: calc(100vh - 80px);
+  max-height: calc(var(--vh) * 100 - 80px);
+  position: relative;
+  padding: 0 10px 0 var(--font-m);
+  margin-top: 20px;
+  border-right: 1px solid var(--color-border);
+  transition: min-width 0.2s ease-out;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  user-select: none;
 
-	h2 {
-		color: var(--color-complement-text);
-		font-weight: 400;
-		text-wrap: nowrap;
-	}
+  h2 {
+    color: var(--color-complement-text);
+    font-weight: 400;
+    text-wrap: nowrap;
+  }
 
-	&-sub {
-		margin-bottom: var(--font-s);
+  &-sub {
+    margin-bottom: var(--font-s);
 
-		&-add {
-			width: 100%;
-			display: flex;
-			text-wrap: nowrap;
+    &-add {
+      width: 100%;
+      display: flex;
+      text-wrap: nowrap;
 
-			button {
-				display: flex;
-				align-items: center;
-				flex-wrap: nowrap;
-				margin-left: 0.5rem;
-				padding: 2px 6px;
-				border-radius: 5px;
-				background-color: var(--color-highlight);
-				color: var(--color-normal-text);
-				text-wrap: nowrap;
+      button {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        margin-left: 0.5rem;
+        padding: 2px 6px;
+        border-radius: 5px;
+        background-color: var(--color-highlight);
+        color: var(--color-normal-text);
+        text-wrap: nowrap;
 
-				span {
-					margin-right: 4px;
-					font-family: var(--font-icon);
-				}
-			}
-		}
+        span {
+          margin-right: 4px;
+          font-family: var(--font-icon);
+        }
+      }
+    }
 
-		&-no p {
-			margin: 0.5rem 0 0.5rem 10px;
-			font-size: var(--font-s);
-			font-style: italic;
-		}
-	}
+    &-no p {
+      margin: 0.5rem 0 0.5rem 10px;
+      font-size: var(--font-s);
+      font-style: italic;
+    }
+  }
 
-	&-collapse {
-		width: 45px;
-		min-width: 45px;
+  &-collapse {
+    width: 45px;
+    min-width: 45px;
 
-		h2 {
-			margin-left: 5px;
-		}
+    h2 {
+      margin-left: 5px;
+    }
 
-		&-button {
-			height: fit-content;
-			position: absolute;
-			bottom: 10px;
-			right: 10px;
-			padding: 5px;
-			border-radius: 5px;
-			transition: background-color 0.2s;
+    &-button {
+      height: fit-content;
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      padding: 5px;
+      border-radius: 5px;
+      transition: background-color 0.2s;
 
-			&:hover {
-				background-color: var(--color-component-background);
-			}
+      &:hover {
+        background-color: var(--color-component-background);
+      }
 
-			span {
-				font-family: var(--font-icon);
-				font-size: var(--font-l);
-			}
-		}
-	}
+      span {
+        font-family: var(--font-icon);
+        font-size: var(--font-l);
+      }
+    }
+  }
 }
 </style>

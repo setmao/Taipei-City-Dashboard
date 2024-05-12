@@ -69,9 +69,39 @@ export const useMapStore = defineStore("map", {
 				style: mapStyle,
 			});
 			this.map.addControl(new mapboxGl.NavigationControl());
+			const locationControl = new mapboxGl.GeolocateControl({
+				positionOptions: {
+					enableHighAccuracy: true
+				},
+				trackUserLocation: true,
+				showUserHeading: true
+			});
+			this.map.addControl(
+				locationControl
+			);
+			locationControl.on("geolocate", (e) => {
+				this.map.getSource("user-location-circle").setData({
+					type: 'FeatureCollection',
+					features: [
+						{
+							type: 'Feature',
+							geometry: {
+								type: 'Point',
+								coordinates: [e.coords.longitude, e.coords.latitude],
+							},
+							properties: {
+								radius: 1000,
+							},
+						},
+					],
+				});
+			})
 			this.map.doubleClickZoom.disable();
 			this.map
 				.on("load", () => {
+					// add a ring to the map so that the user can see the radius of the geolocation
+					this.addUserNearbyLayer();
+					this.addEmergenceLayer();
 					this.initializeBasicLayers();
 				})
 				.on("click", (event) => {
@@ -147,6 +177,62 @@ export const useMapStore = defineStore("map", {
 
 			this.addSymbolSources();
 		},
+		addUserNearbyLayer() {
+			// add a ring to the map so that the user can see the radius of the geolocation
+			this.map.addSource("user-location-circle", {
+				type: 'geojson',
+				data: {
+					type: 'FeatureCollection',
+					features: [],
+				},
+			});
+			// add circle layer
+			this.map.addLayer({
+				id: 'user-location-circle',
+				type: 'circle',
+				source: 'user-location-circle',
+				paint: {
+					'circle-radius': {
+						stops: [
+							[0, 0],
+							[20, 1000],
+						],
+						base: 2,
+					},
+					'circle-color': '#007cbf',
+					'circle-opacity': 0.1,
+					'circle-stroke-width': 1,
+					'circle-stroke-color': '#007cbf',
+				},
+			});
+		},
+		addEmergenceLayer() {
+			this.map.addSource("emergence", {
+				type: "geojson",
+				data: {
+					type: "FeatureCollection",
+					features: [],
+				},
+			});
+			this.map.addLayer({
+				id: 'emergence',
+				type: 'circle',
+				source: 'emergence',
+				paint: {
+					'circle-radius': {
+						stops: [
+							[0, 0],
+							[20, 1000],
+						],
+						base: 2,
+					},
+					'circle-color': '#007cbf',
+					'circle-opacity': 0.1,
+					'circle-stroke-width': 1,
+					'circle-stroke-color': '#007cbf',
+				}
+			})
+		},
 		// 3. Adds symbols that will be used by some map layers
 		addSymbolSources() {
 			const images = [
@@ -156,6 +242,9 @@ export const useMapStore = defineStore("map", {
 				"bike_green",
 				"bike_orange",
 				"bike_red",
+				"emerg-traffic",
+				"emerg-fire",
+				"emerg-earthquake",
 			];
 			images.forEach((element) => {
 				this.map.loadImage(
@@ -271,12 +360,12 @@ export const useMapStore = defineStore("map", {
 			if (map_config.icon) {
 				extra_paint_configs = {
 					...maplayerCommonPaint[
-						`${map_config.type}-${map_config.icon}`
+					`${map_config.type}-${map_config.icon}`
 					],
 				};
 				extra_layout_configs = {
 					...maplayerCommonLayout[
-						`${map_config.type}-${map_config.icon}`
+					`${map_config.type}-${map_config.icon}`
 					],
 				};
 			}
@@ -284,13 +373,13 @@ export const useMapStore = defineStore("map", {
 				extra_paint_configs = {
 					...extra_paint_configs,
 					...maplayerCommonPaint[
-						`${map_config.type}-${map_config.size}`
+					`${map_config.type}-${map_config.size}`
 					],
 				};
 				extra_layout_configs = {
 					...extra_layout_configs,
 					...maplayerCommonLayout[
-						`${map_config.type}-${map_config.size}`
+					`${map_config.type}-${map_config.size}`
 					],
 				};
 			}
@@ -386,7 +475,7 @@ export const useMapStore = defineStore("map", {
 									: 2,
 								opacity:
 									paintSettings["arc-opacity"] ||
-									paintSettings["arc-opacity"] === 0
+										paintSettings["arc-opacity"] === 0
 										? paintSettings["arc-opacity"]
 										: 0.5,
 							};
