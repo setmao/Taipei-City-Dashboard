@@ -22,14 +22,16 @@ export async function getEmergences(params) {
 	//         2. 類型 / `type`: `str`
 	//         3. 名稱 / `name`: `str`
 	// near 25.077844115092592, longitude: 121.52449261904167
-	// const result = (await http.get("emergence/resources", {})).data.data;
-	// for (let index in result) {
+	const result = (await http.get("emergence/events", {})).data.data;
+	for (let index in result) {
 
-	// 	result[index].geo = JSON.parse(result[index].Geo);
-	// }
+		result[index].geo = JSON.parse(result[index].Geo);
+		result[index].datetime = result[index].dt
+		result[index].type_id = result[index].type
+	}
 
-	// console.log(result);
-	// return result;
+	console.log(result);
+	return result;
 
 	return [
 		{
