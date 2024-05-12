@@ -226,6 +226,31 @@ export const useMapStore = defineStore("map", {
 						],
 						base: 2,
 					},
+					'circle-color': '#FF7272',
+					'circle-opacity': 0.1,
+					'circle-stroke-width': 1,
+					'circle-stroke-color': '#FF7272',
+				}
+			})
+			this.map.addSource("emergence-resources", {
+				type: "geojson",
+				data: {
+					type: "FeatureCollection",
+					features: [],
+				},
+			});
+			this.map.addLayer({
+				id: 'emergence-resources',
+				type: 'circle',
+				source: 'emergence-resources',
+				paint: {
+					'circle-radius': {
+						stops: [
+							[0, 0],
+							[20, 1000],
+						],
+						base: 2,
+					},
 					'circle-color': '#007cbf',
 					'circle-opacity': 0.1,
 					'circle-stroke-width': 1,

@@ -49,18 +49,16 @@ getEmergences().then((result) => {
     console.log(result);
     mapStore.map.getSource("emergence").setData({
       type: "FeatureCollection",
-      features: emergences.map((emergence) => {
+      features: result.slice(0, 100).map((e) => {
+        console.log(e);
         return {
           type: "Feature",
           geometry: {
             type: "Point",
-            coordinates: [emergence.geo.x, emergence.geo.y],
+            coordinates: [e.geo.x, e.geo.y],
           },
           properties: {
-            name: emergence.name,
-            type_id: emergence.type_id,
-            status: emergence.status,
-            datetime: emergence.datetime,
+            radius: 1000,
           },
         };
       }),
@@ -69,7 +67,22 @@ getEmergences().then((result) => {
 });
 getEmergenceResources().then((result) => {
   emergenceResources.value = result.slice(0, 100);
-  console.log(result);
+  mapStore.map.getSource("emergence-resources").setData({
+    type: "FeatureCollection",
+    features: result.slice(0, 100).map((e) => {
+      console.log(e);
+      return {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [e.geo.x, e.geo.y],
+        },
+        properties: {
+          radius: 1000,
+        },
+      };
+    }),
+  });
 });
 function padZero(num, targetLength) {
   return String(num).padStart(targetLength, "0");
@@ -359,7 +372,7 @@ onMounted(() => {
           </div>
         </div>
         <div class="flex-wide">
-          <h2>即時災難回報</h2>
+          <h2>資料清單</h2>
           <div class="mute">最後更新: 2024-04-04 12:50</div>
         </div>
         <button
